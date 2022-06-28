@@ -1,5 +1,4 @@
 from flask import Flask
-from jinja2 import escape
 
 app = Flask(__name__)
 @app.route('/')
