@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import UniqueConstraint
 
