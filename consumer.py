@@ -1,6 +1,6 @@
 import pika, json
 
-from Flask_MSA_project.main import Product, db
+from main import Product, db
 
 params = pika.URLParameters('amqps://wjdihkuz:13LRz2uHVsbK80oPLnLmPfwwowPFbdBs@cougar.rmq.cloudamqp.com/wjdihkuz')
 
@@ -17,7 +17,7 @@ def callback(channel, method, properties, body):
     print(data)
 
     if properties.content_type == 'product_created':
-        product= Product(id=data['id'], title=data['title'], image=data['image'])
+        product = Product(id=data['id'], title=data['title'], image=data['image'])
         db.session.add(product)
         db.session.commit()
 
