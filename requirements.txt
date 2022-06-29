@@ -6,4 +6,4 @@ Flask-Script==2.0.5
 Flask-Cors==3.0.9
 requests==2.25.0
 mysqlclient==2.0.1
-pika==1.1.0
+pika==1.2.1
