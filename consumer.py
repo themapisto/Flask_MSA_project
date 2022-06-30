@@ -30,6 +30,7 @@ def callback(channel, method, properties, body):
         print('Product Updated')
 
     elif properties.content_type == 'product_deleted':
+        print('deleted builtins.Nonetype =====================')
         product = Product.query.get(data)
         db.session.delete(product)
         db.session.commit()
