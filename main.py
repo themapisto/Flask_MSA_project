@@ -29,8 +29,9 @@ class ProductUser(db.Model):
 
 @app.route('/api/products')
 def index():
-    print('hello')
-    return json.dumps(Product.query.all())
+    data=Product.query.all()
+    print(data)
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
