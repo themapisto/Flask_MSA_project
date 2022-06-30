@@ -29,7 +29,7 @@ class ProductUser(db.Model):
 
 @app.route('/api/products')
 def index():
-
+    print('hello')
     return json.dumps(Product.query.all())
 
 if __name__ == '__main__':
