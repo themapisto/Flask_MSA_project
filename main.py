@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -27,7 +29,8 @@ class ProductUser(db.Model):
 
 @app.route('/api/products')
 def index():
-    return jsonify(Product.query.all())
+
+    return json.dumps(Product.query.all())
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
