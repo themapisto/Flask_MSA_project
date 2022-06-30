@@ -1,13 +1,20 @@
 import pika, json
 
-from main import Product, db
+from main import Product
+from flask import Flask
+from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:root@db/main'
+CORS(app)
+
+db = SQLAlchemy(app)
+
 
 params = pika.URLParameters('amqps://wjdihkuz:13LRz2uHVsbK80oPLnLmPfwwowPFbdBs@cougar.rmq.cloudamqp.com/wjdihkuz')
-
 connection = pika.BlockingConnection(params)
-
 channel = connection.channel()
-
 channel.queue_declare(queue='main')
 
 
