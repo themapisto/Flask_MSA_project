@@ -17,24 +17,24 @@ def callback(channel, method, properties, body):
     print(data)
     print(properties)
 
-    if properties.content_type == 'product_created':
-        product = Product(id=data['id'], title=data['title'], image=data['image'])
-        db.session.add(product)
-        db.session.commit()
-
-    elif properties.content_type == 'product_updated':
-        product = Product.query.get(data['id'])
-        product.title = data['title']
-        product.image = data['image']
-        db.session.commit()
-        print('Product Updated')
-
-    elif properties.content_type == 'product_deleted':
-        print('deleted builtins.Nonetype =====================')
-        product = Product.query.get(data)
-        db.session.delete(product)
-        db.session.commit()
-        print('Product Deleted')
+    # if properties.content_type == 'product_created':
+    #     product = Product(id=data['id'], title=data['title'], image=data['image'])
+    #     db.session.add(product)
+    #     db.session.commit()
+    #
+    # elif properties.content_type == 'product_updated':
+    #     product = Product.query.get(data['id'])
+    #     product.title = data['title']
+    #     product.image = data['image']
+    #     db.session.commit()
+    #     print('Product Updated')
+    #
+    # elif properties.content_type == 'product_deleted':
+    #     print('deleted builtins.Nonetype =====================')
+    #     product = Product.query.get(data)
+    #     db.session.delete(product)
+    #     db.session.commit()
+    #     print('Product Deleted')
 
 
 channel.basic_consume(queue='main', on_message_callback=callback, auto_ack=True)
