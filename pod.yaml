@@ -19,4 +19,4 @@ spec:
         - name: service1
           image: public.ecr.aws/s3y1s2c3/koo/nginx
           ports:
-            - containerPort: 5001
+            - containerPort: 5000
