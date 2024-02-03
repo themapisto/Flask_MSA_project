@@ -1,5 +1,5 @@
 FROM python:3.9-slim
-COPY . /							#python 실행파일을 받아온다.
+COPY . 						#python 실행파일을 받아온다.
 RUN pip3 install flask				#Flask 패키지 설치
 WORKDIR /
 CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"]
