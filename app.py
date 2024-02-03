@@ -7,5 +7,5 @@ def hello():
   return "hello socar"
 
 @app.route("/", methods=['GET'])
-def hello():
+def hello123():
   return "hello koo"
