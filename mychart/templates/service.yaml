@@ -5,11 +5,6 @@ metadata:
   labels:
     app: service1
   name: service1
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
-    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-    service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: "8080"
-    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
   namespace: default
 spec:
   ports:
@@ -18,5 +13,4 @@ spec:
       targetPort: 5000
   selector:
     app: service1
-  type: LoadBalancer
-  loadBalancerClass: service.k8s.aws/nlb
+  type: ClusterIP
