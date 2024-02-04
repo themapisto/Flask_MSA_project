@@ -3,7 +3,7 @@ kind: Service
 metadata:
   creationTimestamp: null
   labels:
-    run: mynginx 
+    app: service1
   name: service1
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
@@ -17,6 +17,6 @@ spec:
       protocol: TCP
       targetPort: 5000
   selector:
-    run: mynginx
+    app: service1
   type: LoadBalancer
   loadBalancerClass: service.k8s.aws/nlb
