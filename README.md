@@ -1,23 +1,21 @@
 # Flask_MSA_project
 
-### app
+## app
 Python Web Framework 중에서 간단한 API 서버를 만들기엔 Flask 같은 경량화 프레임워크가 적합합니다.
 app.py는 API 서버의 간단한 엔드포인트를 하나 구현하여 문자열을 리턴하는 어플리케이션을 작성했습니다.
 
-### Helm chart
+## Helm chart
 
 mychart 안에는 helm chart로 동적 렌더링을 할수 있는 구조로 구성했으며 시간 관계상 image name만 렌더링 해두었습니다.
 
-### Dockerfile
-### python과 Flask를 
-### CMD와 ENTRYPOINT 
+## Dockerfile
 도커파일은 Python과 FLASK를 설치 하는 파일을 작성했고
 CMD는 추가 인자로 명령어를 덮어쓸 수 있지만, ENTRYPOINT로 설정한 명령어는 컨테이너 실행 시 추가 인자로 덮어쓸 수 없기 때문에
 테스트용으로는 CMD를 사용하여 docker run 명령어 옵션으로 추가적인 옵션들을 주면서 빌드 테스트를 한다. (예를 들어 5000번 포트가 이미 사용중이라)
 docker run -p 로 5001번 포트를 오픈하는 경우? 
 기본적으로는 ENTRYPOINT 명령어는 컨테이너가 시작될 때 필수적으로 특정 명령을 실행해야 하는 경우에 적합하다.
 
-### istio 
+## istio 
 istio를 사용한 이유는 NGINX ingress는 보다 검증된 솔루션이지만 원시적인 로드밸런싱과 라우팅에 초점을 맞춘
 엔터프라이즈 기업들에 적합하다고 생각한다. 또한 콘텐츠 전송이나 워크로드의 성능의 최적화가 무엇보다 중요한 
 업무 특성상 사용하는것이 바람직하다.
