@@ -1,4 +1,4 @@
-function fetchClusters() {
+function fetchRoutingtable() {
     // 입력된 sddc_id와 org_id 가져오기
     const sddc_id = document.getElementById('sddc_id').value;
     const org_id = document.getElementById('org_id').value;
@@ -17,5 +17,5 @@ function fetchClusters() {
 // 페이지 로드 시 클러스터 정보 가져오기
 document.getElementById('clusterForm').addEventListener('submit', function(event) {
     event.preventDefault(); // 폼 기본 동작 방지
-    fetchClusters(); // 클러스터 정보 가져오기 호출
+    fetchRoutingtable(); // 클러스터 정보 가져오기 호출
 });

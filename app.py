@@ -58,47 +58,13 @@ def get_orgs():
                 return jsonify({'error': 'Failed to refresh token'}), 401
         if response.status_code == 200:
             orgs_data = response.json()
+            
             org_info = [{'display_name': org['display_name'], 'org_id': org['id']} for org in orgs_data]
             return jsonify({'org_info': org_info})
         else:
             return jsonify({'error': 'Failed to retrieve orgs'}), response.status_code
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-@app.route('/get_clusters', methods=['GET'])
-def get_clusters():
-    try:
-        response = requests.get(api_url, headers=headers)
-        if response.status_code == 401:  # 토큰 만료 시
-            if refresh_access_token():  # 토큰 갱신 시도
-                # 갱신된 토큰으로 다시 요청 보내기
-                headers["csp-auth-token"] = token_info["access_token"]
-                response = requests.get(api_url, headers=headers)
-            else:
-                return jsonify({'error': 'Failed to refresh token'}), 401    
-        if response.status_code == 200:
-            # 요청에서 sddc_id와 org_id 추출
-            sddc_id = request.args.get('sddc_id')
-            org_id = request.args.get('org_id')
-
-            # VMware API 호출을 위한 URL 생성
-            api_url = f"https://vmc.vmware.com/vmc/api/orgs/{org_id}/sddcs/{sddc_id}"
-            
-            # VMware API 호출
-            headers = {
-                "Content-Type": "application/json",
-                "csp-auth-token": token_info["access_token"]
-            }
-            response = requests.get(api_url, headers=headers)
-            
-            
-            data = response.json()
-            return jsonify(data)
-        else:
-            return jsonify({'error': 'Failed to get routing tables'}), response.status_code
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500 
-
 
 # T0 라우팅 테이블 조회 엔드포인트
 @app.route('/get_routing_tables', methods=['GET'])
@@ -132,6 +98,41 @@ def get_routing_tables():
             return jsonify({'error': 'Failed to get routing tables'}), response.status_code
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@app.route('/get_sddc_id', methods=['GET'])
+def get_sddc_id():
+    # 요청에서 org_id 추출
+    org_id = request.args.get('org_id')
+    print(org_id)
+    # VMware API 호출
+    api_url = f"https://vmc.vmware.com/vmc/api/orgs/{org_id}/sddcs"
+    headers = {
+        "Content-Type": "application/json",
+        "csp-auth-token": token_info["access_token"]
+    }
+    try:
+        response = requests.get(api_url, headers=headers)
+        if response.status_code == 401:  # 토큰 만료 시
+            if refresh_access_token():  # 토큰 갱신 시도
+                # 갱신된 토큰으로 다시 요청 보내기
+                headers["csp-auth-token"] = token_info["access_token"]
+                response = requests.get(api_url, headers=headers)
+            else:
+                return jsonify({'error': 'Failed to refresh token'}), 401
+        if response.status_code == 200:
+            data = response.json()
+            print(data)
+          
+            # 첫 번째 SDDC의 ID 반환 (단일 SDDC 조회라고 가정)
+            sddc_id = data[0]['id']
+            print(sddc_id)
+            return jsonify({'sddc_id': sddc_id})
+        else:
+            return jsonify({'error': 'Failed to get sddc_id'}), response.status_code
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 
 
 
