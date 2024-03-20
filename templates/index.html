@@ -3,58 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask API Example</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>VMC API Example</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Get Routing table Information</h1>
-    <div id="orgs-list">
-        <!-- 여기에 서버로부터 받은 조직 목록이 표시됩니다 -->
+    
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" onclick="openTab(event, 'home')">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="openTab(event, 'routing')">Routing Tables</a>
+            </li>
+        </ul>
+
+
     </div>
-    <form id="clusterForm">
-        <label for="sddc_id">SDDC ID:</label>
-        <input type="text" id="sddc_id" name="sddc_id">
-        <label for="org_id">Org ID:</label>
-        <input type="text" id="org_id" name="org_id">
-        <button type="submit">Get Routingtable</button>
-    </form>
-    <div id="clusterResult"></div>
+
+    <div class="container mt-5">
+        <h1 class="mb-4">SDDC 정보</h1>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cluster 숫자</h5>
+                        <p class="card-text" id="clusterNumber">Loading...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Host 숫자</h5>
+                        <p class="card-text" id="hostNumber">Loading...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Core 수</h5>
+                        <p class="card-text" id="coreCount">Loading...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Availability Zones</h5>
+                        <p class="card-text" id="availabilityZones">Loading...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">CPU GHz</h5>
+                        <p class="card-text" id="cpuGHz">Loading...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Memory</h5>
+                        <p class="card-text" id="memory">Loading...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Storage 용량</h5>
+                        <p class="card-text" id="storageCapacity">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
-        // 서버에 GET 요청을 보내고 조직 목록을 가져와서 화면에 표시하는 함수
-        function fetchOrgs() {
-            fetch('/get_orgs')
-                .then(response => response.json())
-                .then(data => {
-                    const orgsListDiv = document.getElementById('orgs-list');
-                    data.org_info.forEach(org => {
-                        const orgElement = document.createElement('p');
-                        orgElement.textContent = `Display Name: ${org.display_name}, Org ID: ${org.org_id}`;
-                        orgElement.addEventListener('click', () => fillForm(org));
-                        orgsListDiv.appendChild(orgElement);
-                    });
-                })
-                .catch(error => console.error('Error fetching orgs:', error));
-        }
+$.get("/get_sddc_info", { org_id: "a684185a-37b4-47de-84b4-4fcc4f77600d" }, function(data) {
+    // 클러스터 숫자 업데이트
+    console.log("hello");
+    console.log(data); // 데이터 출력
+    $("#clusterNumber").text("1");
 
-        // 페이지 로드시 조직 목록을 가져옴
-        fetchOrgs();
+    // 호스트 숫자 업데이트
+    $("#hostNumber").text("2");
 
-        // 클릭된 org 정보로 폼 입력란 자동 채우기
-        function fillForm(org) {
-            document.getElementById('org_id').value = org.org_id;
-            fetchSddcId(org.org_id);
-        }
+    // 코어 수 업데이트
+    $("#coreCount").text(data.total_number_of_cores);
 
-        // 선택된 org_id로부터 sddc_id 가져와서 자동으로 입력
-        function fetchSddcId(orgId) {
-            fetch(`/get_sddc_id?org_id=${orgId}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('sddc_id').value = data.sddc_id;
-                })
-                .catch(error => console.error('Error fetching sddc_id:', error));
+    // Availability Zones 업데이트
+    $("#availabilityZones").text("ap-northeast-2a,2c");
+
+    // CPU GHz 업데이트
+    $("#cpuGHz").text(data.cpu_capacity_ghz);
+
+    // Memory 업데이트
+    $("#memory").text(data.memory_capacity_gib + " GB");
+
+    // Storage 용량 업데이트
+    $("#storageCapacity").text(data.storage_capacity_gib + " GB");
+
+    // CPU GHz 업데이트 cpu_capacity_ghz
+
+});
+
+    
+
+
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("nav-link");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            if (tabName === 'routing') {
+                window.location.href = '/routing';
+            } 
+            else if (tabName === 'home') {
+                window.location.href = '/';
+            }
+            else {
+                document.getElementById(tabName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
         }
     </script>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

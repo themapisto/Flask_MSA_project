@@ -38,6 +38,56 @@ def refresh_access_token():
 def index():
     return render_template('index.html')
 
+@app.route('/routing')
+def routing():
+    return render_template('routingtable.html')
+
+@app.route("/get_sddc_info", methods=["GET"])
+def get_sddc_info():
+
+        # 조직 ID를 클라이언트에서 받아옵니다.
+        global token_info
+
+        org_id = request.args.get("org_id")
+        sddc_id = "c1363dbf-4957-403f-be60-82e1e8acbb44"
+        print(org_id)
+        api_url = f"https://vmc.vmware.com/vmc/api/orgs/{org_id}/sddcs/{sddc_id}"
+        print(api_url)
+        # VMware API를 통해 SDDC Provision Spec을 가져옵니다.
+        headers = {
+            "Content-Type": "application/json",
+            "csp-auth-token": token_info["access_token"]
+        }
+        params = {
+            "org_id": org_id
+        }
+        response = requests.get(api_url, headers=headers, params=params)
+        try:
+            response = requests.get(api_url, headers=headers)
+            if response.status_code == 401:  # 토큰 만료 시
+                if refresh_access_token():  # 토큰 갱신 시도
+                    # 갱신된 토큰으로 다시 요청 보내기
+                    headers["csp-auth-token"] = token_info["access_token"]
+                    response = requests.get(api_url, headers=headers)
+                else:
+                    return jsonify({'error': 'Failed to refresh token'}), 401
+            if response.status_code == 200:
+                sddc_info = response.json()
+                cluster_capacity = sddc_info.get("resource_config", {}).get("clusters", [])[0].get("cluster_capacity")
+                print("Cluster Capacity:", cluster_capacity)
+                return jsonify(cluster_capacity)
+                
+            else:
+                return jsonify({'error': 'Failed to retrieve orgs'}), response.status_code
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
+
+
+
+
+
+
 @app.route('/get_orgs', methods=['GET'])
 def get_orgs():
     global token_info
@@ -120,9 +170,7 @@ def get_sddc_id():
             else:
                 return jsonify({'error': 'Failed to refresh token'}), 401
         if response.status_code == 200:
-            data = response.json()
-            print(data)
-          
+            data = response.json()          
             # 첫 번째 SDDC의 ID 반환 (단일 SDDC 조회라고 가정)
             sddc_id = data[0]['id']
             print(sddc_id)
