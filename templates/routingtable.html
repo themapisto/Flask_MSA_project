@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flask API Example</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.1.1/d3.min.js"></script>
+
 </head>
 <body>
     <div class="tab">
         <button class="tablinks" onclick="openTab(event, 'home')">home</button>
         <button class="tablinks" onclick="openTab(event, 'routing')">Routing Tables</button>
     </div>
+
+    
 
 
     <h1>Get Routing table Information</h1>
@@ -96,7 +98,6 @@
                 evt.currentTarget.className += " active";
             }
         }
-
 
 
     </script>

@@ -16,6 +16,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="#" onclick="openTab(event, 'routing')">Routing Tables</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="openTab(event, 'topology')">topology </a>
+            </li>
         </ul>
 
 
@@ -137,6 +140,9 @@ $.get("/get_sddc_info", { org_id: "a684185a-37b4-47de-84b4-4fcc4f77600d" }, func
             } 
             else if (tabName === 'home') {
                 window.location.href = '/';
+            }
+            else if (tabName === 'topology') {
+                window.location.href = '/topology';
             }
             else {
                 document.getElementById(tabName).style.display = "block";

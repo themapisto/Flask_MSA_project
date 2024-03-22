@@ -42,6 +42,25 @@ def index():
 def routing():
     return render_template('routingtable.html')
 
+@app.route('/topology')
+def topology():
+    return render_template('topology.html')
+
+
+
+
+@app.route('/data')
+def get_data():
+    # 여기에 데이터를 반환하는 코드 작성
+ 
+
+    
+ # 데이터를 얻는 코드를 여기에 작성
+    return jsonify(data)
+
+
+
+
 @app.route("/get_sddc_info", methods=["GET"])
 def get_sddc_info():
 
@@ -120,6 +139,7 @@ def get_orgs():
 @app.route('/get_routing_tables', methods=['GET'])
 def get_routing_tables():
     # 요청에서 sddc_id와 org_id 추출
+    print("hello")
     sddc_id = request.args.get('sddc_id')
     org_id = request.args.get('org_id')
 
