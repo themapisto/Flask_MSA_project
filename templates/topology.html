@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'home')">home</button>
+    </div>
     <title>Routing Table Topology</title>
     <style>
         table {
@@ -90,7 +93,29 @@
         })
         .catch(error => console.error('Error fetching routing tables:', error));
 });
-   
+function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            if (tabName === 'routing') {
+                window.location.href = '/routing'; // 이 부분이 추가됨
+            } 
+            else if (tabName === 'home') {
+             window.location.href = '/';
+            }
+            else {
+                document.getElementById(tabName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+        }
+
+
 </script>
 </body>
 </html>
